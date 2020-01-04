@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1200px, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <title>react first</title>
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        const e = React.createElement;
+        class LikeButton extends React.Component{
+            constructor(props){
+                super(props);
+                //변경이 되어야 하는 부분을 관리
+                this.state = {
+                    liked:false
+                };
+            }
+            render(){
+                return e('button', //html 객체
+                {onClick:()=>{this.setState({liked:true})}}, //html attribute
+                this.state.liked?'Liked':'like' //textContent
+                );
+            }
+        }
+        //(class , 실제 보여질 HTML dom)
+        ReactDOM.render( e(LikeButton) , document.querySelector('#root'))
+
+    </script>
+</body>
+</html>
