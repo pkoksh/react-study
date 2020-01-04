@@ -6,42 +6,56 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-    <!--
-        JSX를 사용하기 위해 babel이 추가되어야 함.
-        script tag에 text/babel 추가
-        e(React.Component) 를 사용하지 않고 그냥 <button>과 같은 테그를 사용
-    -->
-
-
     <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <title>react first</title>
+    <title>react GuGuDan</title>
 </head>
 <body>
     <div id="root"></div>
     <script type="text/babel">
-        // const e = React.createElement; //JSX사용시엔 필요없음
-        class LikeButton extends React.Component{
+        class GuGuDan extends React.Component{
+            makeQuestion(){
+                var firstNum = Math.random();
+                var secondNum = Math.random();
+                // this.question = firstNum + '곱하기' + secondNum + '은?';
+                // this.rightAnswer = firstNum * secondNum;
+            }
             constructor(props){
                 super(props);
                 //변경이 되어야 하는 부분을 관리
                 this.state = {
-                    liked:false
+                    firstNum:Math.ceil(Math.random()*9),
+                    secondNum:Math.ceil(Math.random()*9),
+                    answer:'',
+                    result:''
                 };
             }
             render(){
                 //JSX문법 사용
-                return <button type="submit" onClick={()=>{this.setState({liked:true})}}>
-                    {this.state.liked?'Liked':'Like'}
-                    </button>
-                
-                // e('button', //html 객체
-                // {onClick:()=>{this.setState({liked:true})}}, //html attribute
-                // this.state.liked?'Liked':'like' //textContent
-                // );
+                return (<><div>{this.state.firstNum} 곱하기 {this.state.secondNum } 은?</div>
+                        <form onSubmit={(e)=>{
+                            e.preventDefault();
+                            if(this.state.firstNum*this.state.secondNum == this.state.answer){
+                                this.setState({
+                                    result:'딩동댕',
+                                    firstNum:Math.ceil(Math.random()*9),
+                                    secondNum:Math.ceil(Math.random()*9),
+                                    answer:''
+                                });
+                            }else{
+                                this.setState({
+                                    result:'땡',
+                                    answer:''
+                                });
+                            }
+                        }}>
+                            <input type='number' value={this.state.answer} onChange={(e) => {this.setState({answer:e.target.value});}}/>
+                            <button type='button'>확인</button>
+                        </form>
+                        <div>{this.state.result}</div></>);
             }
         }
         //(class , 실제 보여질 HTML dom)
-        ReactDOM.render( <div><LikeButton/><LikeButton/></div> , document.querySelector('#root'))
+        ReactDOM.render( <div><GuGuDan/></div> , document.querySelector('#root'))
 
     </script>
 </body>
