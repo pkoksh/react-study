@@ -29,26 +29,30 @@
                     result:''
                 };
             }
+            ONSUBMIT = (e)=>{
+                e.preventDefault();
+                if(this.state.firstNum*this.state.secondNum == this.state.answer){
+                    this.setState({
+                        result:'딩동댕',
+                        firstNum:Math.ceil(Math.random()*9),
+                        secondNum:Math.ceil(Math.random()*9),
+                        answer:''
+                    });
+                }else{
+                    this.setState({
+                        result:'땡',
+                        answer:''
+                    });
+                }
+            };
+            INPUTONCHANGE = (e) => {
+                this.setState({answer:e.target.value});
+            }
             render(){
                 //JSX문법 사용
                 return (<><div>{this.state.firstNum} 곱하기 {this.state.secondNum } 은?</div>
-                        <form onSubmit={(e)=>{
-                            e.preventDefault();
-                            if(this.state.firstNum*this.state.secondNum == this.state.answer){
-                                this.setState({
-                                    result:'딩동댕',
-                                    firstNum:Math.ceil(Math.random()*9),
-                                    secondNum:Math.ceil(Math.random()*9),
-                                    answer:''
-                                });
-                            }else{
-                                this.setState({
-                                    result:'땡',
-                                    answer:''
-                                });
-                            }
-                        }}>
-                            <input type='number' value={this.state.answer} onChange={(e) => {this.setState({answer:e.target.value});}}/>
+                        <form onSubmit={this.ONSUBMIT}>
+                            <input type='number' value={this.state.answer} onChange={this.INPUTONCHANGE}/>
                             <button type='button'>확인</button>
                         </form>
                         <div>{this.state.result}</div></>);
