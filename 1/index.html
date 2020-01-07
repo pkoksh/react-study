@@ -36,11 +36,15 @@
             ONSUBMIT = (e)=>{
                 e.preventDefault();
                 if(this.state.firstNum*this.state.secondNum == this.state.answer){
-                    this.setState({
-                        result:'딩동댕',
-                        firstNum:Math.ceil(Math.random()*9),
-                        secondNum:Math.ceil(Math.random()*9),
-                        answer:''
+
+                    //함수를 리턴할 수 있음 (그냥 setState안에 객체를 쓰면 비동기로 동작, 함수를 쓰면 동기로 동작함.)
+                    this.setState((prevState) => {
+                        return {
+                            result:'딩동댕 : '+prevState.answer,
+                            firstNum:Math.ceil(Math.random()*9),
+                            secondNum:Math.ceil(Math.random()*9),
+                            answer:''
+                        };
                     });
                 }else{
                     this.setState({
