@@ -52,16 +52,20 @@
                         answer:''
                     });
                 }
+                //아래 input 객체에 포커스를 두자
+                this.inputTag.focus();
             };
             INPUTONCHANGE = (e) => {
                 this.setState({answer:e.target.value});
             }
+            inputTag; //ref 그냥 변수임.
             render(){
                 //JSX문법 사용
+                //input 객체에 직접 접근하기 위해 ref를 선언한다.
                 return (<><div>{this.state.firstNum} 곱하기 {this.state.secondNum } 은?</div>
                         <form onSubmit={this.ONSUBMIT}>
-                            <input type='number' value={this.state.answer} onChange={this.INPUTONCHANGE}/>
-                            <button type='button'>확인</button>
+                            <input ref={(c) => {this.inputTag = c;}} type='number' value={this.state.answer} onChange={this.INPUTONCHANGE}/>
+                            <button type='submit'>확인</button>
                         </form>
                         <div>{this.state.result}</div></>);
             }
