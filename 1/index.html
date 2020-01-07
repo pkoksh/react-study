@@ -19,16 +19,20 @@
                 // this.question = firstNum + '곱하기' + secondNum + '은?';
                 // this.rightAnswer = firstNum * secondNum;
             }
-            constructor(props){
-                super(props);
+
+            //실무에서는 constructor를 거의 않쓴다.
+            // constructor(props){
+            //     super(props);
                 //변경이 되어야 하는 부분을 관리
-                this.state = {
+                state = {
                     firstNum:Math.ceil(Math.random()*9),
                     secondNum:Math.ceil(Math.random()*9),
                     answer:'',
                     result:''
                 };
-            }
+            // }
+
+            //이벤트 함수는 반드시 화살표 함수여야 한다. (아니면 내부의 this의미가 달라짐)
             ONSUBMIT = (e)=>{
                 e.preventDefault();
                 if(this.state.firstNum*this.state.secondNum == this.state.answer){
