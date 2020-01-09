@@ -12,69 +12,114 @@
 <body>
     <div id="root"></div>
     <script type="text/babel">
-        class GuGuDan extends React.Component{
-            makeQuestion(){
-                var firstNum = Math.random();
-                var secondNum = Math.random();
-                // this.question = firstNum + '곱하기' + secondNum + '은?';
-                // this.rightAnswer = firstNum * secondNum;
-            }
+        // class GuGuDan extends React.Component{
+        
+        //     //실무에서는 constructor를 거의 않쓴다.
+        //     // constructor(props){
+        //     //     super(props);
+        //         //변경이 되어야 하는 부분을 관리
+        //         state = {
+        //             firstNum:Math.ceil(Math.random()*9),
+        //             secondNum:Math.ceil(Math.random()*9),
+        //             answer:'',
+        //             result:''
+        //         };
+        //     // }
 
-            //실무에서는 constructor를 거의 않쓴다.
-            // constructor(props){
-            //     super(props);
-                //변경이 되어야 하는 부분을 관리
-                state = {
-                    firstNum:Math.ceil(Math.random()*9),
-                    secondNum:Math.ceil(Math.random()*9),
-                    answer:'',
-                    result:''
-                };
-            // }
+        //     //이벤트 함수는 반드시 화살표 함수여야 한다. (아니면 내부의 this의미가 달라짐)
+        //     ONSUBMIT = (e)=>{
+        //         e.preventDefault();
+        //         if(this.state.firstNum*this.state.secondNum == this.state.answer){
 
-            //이벤트 함수는 반드시 화살표 함수여야 한다. (아니면 내부의 this의미가 달라짐)
-            ONSUBMIT = (e)=>{
+        //             //함수를 리턴할 수 있음 (그냥 setState안에 객체를 쓰면 비동기로 동작, 함수를 쓰면 동기로 동작함.)
+        //             this.setState((prevState) => {
+        //                 return {
+        //                     result:'딩동댕 : '+prevState.answer,
+        //                     firstNum:Math.ceil(Math.random()*9),
+        //                     secondNum:Math.ceil(Math.random()*9),
+        //                     answer:''
+        //                 };
+        //             });
+        //         }else{
+        //             this.setState({
+        //                 result:'땡',
+        //                 answer:''
+        //             });
+        //         }
+        //         //아래 input 객체에 포커스를 두자
+        //         this.inputTag.focus();
+        //     };
+        //     INPUTONCHANGE = (e) => {
+        //         this.setState({answer:e.target.value});
+        //     }
+        //     inputTag; //ref 그냥 변수임.
+
+        //     //ref내 함수도 밖으로 빼는게 좋다.(거의 render안에는 직접적인 함수를 사용하면 안된다. 되긴 되는데 성능저하가 큼)
+        //     onRefInput = (c) => {this.inputTag = c;}
+
+        //     //setState()를 통해 state가 변경되면 render 함수가 호출된다. 
+        //     render(){
+        //         //JSX문법 사용
+        //         //input 객체에 직접 접근하기 위해 ref를 선언한다.
+        //         return (<><div>{this.state.firstNum} 곱하기 {this.state.secondNum } 은?</div>
+        //                 <form onSubmit={this.ONSUBMIT}>
+        //                     <input ref={this.onRefInput} type='number' value={this.state.answer} onChange={this.INPUTONCHANGE}/>
+        //                     <button type='submit'>확인</button>
+        //                 </form>
+        //                 <div>{this.state.result}</div></>);
+        //     }
+        // }
+
+        //Hooks 사용 방식으로 변경
+        const GuGuDan = () => {
+
+            //state 선언을 대신하는 방법(그냥 외워야 함.)
+            //구조분해문법(distructuring)      ... use로 시작하는게 Hooks다.
+            const [first,setFirst] = React.useState(Math.ceil(Math.random()*9) );
+            const [second,setSecond] = React.useState(Math.ceil(Math.random()*9) );
+            const [value,setValue] = React.useState("");
+            const [result,setResult] = React.useState("");
+
+            //Dom에 접근하는 방법
+            const inputRef = React.useRef(null);
+
+
+
+            const onSubmitWork = (e) => {
                 e.preventDefault();
-                if(this.state.firstNum*this.state.secondNum == this.state.answer){
+                if(first*second == value){
 
-                    //함수를 리턴할 수 있음 (그냥 setState안에 객체를 쓰면 비동기로 동작, 함수를 쓰면 동기로 동작함.)
-                    this.setState((prevState) => {
-                        return {
-                            result:'딩동댕 : '+prevState.answer,
-                            firstNum:Math.ceil(Math.random()*9),
-                            secondNum:Math.ceil(Math.random()*9),
-                            answer:''
-                        };
-                    });
+                    //setState 대신에 set객체()형식으로 사용
+                    setResult('딩동댕 : '+value);
+                    setFirst(Math.ceil(Math.random()*9));
+                    setSecond(Math.ceil(Math.random()*9));
+                    setValue('');
                 }else{
-                    this.setState({
-                        result:'땡',
-                        answer:''
-                    });
+                    setResult('땡');
+                    setValue('');
                 }
+
                 //아래 input 객체에 포커스를 두자
-                this.inputTag.focus();
-            };
-            INPUTONCHANGE = (e) => {
-                this.setState({answer:e.target.value});
+                inputRef.current.focus();
             }
-            inputTag; //ref 그냥 변수임.
-
-            //ref내 함수도 밖으로 빼는게 좋다.(거의 render안에는 직접적인 함수를 사용하면 안된다. 되긴 되는데 성능저하가 큼)
-            onRefInput = (c) => {this.inputTag = c;}
-
-            //setState()를 통해 state가 변경되면 render 함수가 호출된다. 
-            render(){
-                //JSX문법 사용
-                //input 객체에 직접 접근하기 위해 ref를 선언한다.
-                return (<><div>{this.state.firstNum} 곱하기 {this.state.secondNum } 은?</div>
-                        <form onSubmit={this.ONSUBMIT}>
-                            <input ref={this.onRefInput} type='number' value={this.state.answer} onChange={this.INPUTONCHANGE}/>
-                            <button type='submit'>확인</button>
-                        </form>
-                        <div>{this.state.result}</div></>);
+            const onChangeInput = (e) => {
+                setValue(e.target.value);
             }
+
+
+            return (
+                <React.Fragment>
+                    <div>{first} 곱하기 {second} 는?</div>
+                    <form onSubmit={onSubmitWork}>
+                        <input ref={inputRef} onChange={onChangeInput} value={value}/>
+                        <button>click</button>
+                    </form>
+                    <div>{result}</div>
+                </React.Fragment>)
+            ;
         }
+
+
         //(class , 실제 보여질 HTML dom)
         ReactDOM.render( <div><GuGuDan/></div> , document.querySelector('#root'))
 
