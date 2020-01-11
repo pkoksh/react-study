@@ -2,10 +2,12 @@ const React = require("react");
 const {Component} = React; // extends React.Component 대신에 
 
 class WordRelay extends Component{
-    state = {};
+    state = {
+        text:'hello, webpack'
+    };
 
     render(){
-
+        return <h1>{this.state.text}</h1>
     }
 }
 
