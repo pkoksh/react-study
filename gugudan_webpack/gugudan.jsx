@@ -1,48 +1,47 @@
 const React = require('react');
-const {Component} = React;
+const {useState,useRef} = React;
+const GuGuDan = () => {
 
-class GuGuDan extends Component{
-    state = {
-        first:Math.floor(Math.random() * 9),
-        second:Math.floor(Math.random() * 9),
-        value:'',
-        result:''
-    };
-    inputTag;
-    inputRef = (c) =>{
-        this.inputTag = c;
-    };
-    onSubmitWork = (e) => {
+    const [first,setFirst] = useState(Math.floor(Math.random() * 9));
+    const [second,setSecond] = useState(Math.floor(Math.random() * 9));
+    const [value,setValue] = useState('');
+    const [result,setResult] = useState('');
+    const inputEl = useRef(null);
+
+    const onSubmitWork = (e) => {
         e.preventDefault();
-        if(this.state.first * this.state.second == this.state.value){
-            this.setState({
-                first:Math.floor(Math.random() * 9),
-                second:Math.floor(Math.random() * 9),
-                value:'',
-                result:'정답'
-            });
+        if(first * second == value){
+            
+                setFirst(Math.floor(Math.random() * 9));
+                setSecond(Math.floor(Math.random() * 9));
+                setValue('');
+                setResult('정답');
+            
         }else{
-            this.setState({
-                value:'',
-                result:'땡'
-            });
+                setValue('');
+                setResult('땡');
         }
+        inputEl.current.focus();
     };
-    onChangeWork = (e) => {
-        this.setState({'value': e.target.value});
+    const onChangeWork = (e) => {
+        setValue(e.target.value);
     };
 
-    render(){
-        return (
+  
+
+
+    return (
         <React.Fragment>
-            <div>{this.state.first} * {this.state.second} = ?</div>
-            <form onSubmit={this.onSubmitWork}>
-                <input ref={inputRef} onChange={this.onChangeWork} value={this.state.value}></input>
+            <div>{first} * {second} = ?</div>
+            <form onSubmit={onSubmitWork}>
+                <input ref={inputEl} onChange={onChangeWork} value={value}></input>
                 <button>확인</button>
             </form>
-            <div>{this.state.result}</div>
+            <div>{result}</div>
         </React.Fragment>
         );
-    }
 }
+
+
+
 module.exports = GuGuDan;
