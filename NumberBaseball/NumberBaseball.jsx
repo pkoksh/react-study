@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React,{useState} from 'react';
 import Try from './Try';
 //숫자 4개를 겹치지 않게 뽑는 함수
 function getNumbers(){
@@ -10,6 +10,76 @@ function getNumbers(){
     console.log(arr);
     return arr;
 }
+
+const NumberBaseball = () => {
+    const [result,setResult] = useState('');
+    const [value,setValue] = useState('');
+    const [answer,setAnswer] = useState(getNumbers());
+    const [tires,setTries] = useState([]);
+
+
+    const onSubmitForm = (e) => {
+        e.preventDefault();
+
+        if(value == answer.join("")){
+            //예전 state값으로 부터 현재 state값을 만들때는 함수형으로 선언해야 한다.
+            setResult("홈런");
+            setTries((prevState) => {return [...prevState.tries, {try:value , result:'홈런'}]})
+            alert("게임을 다시 시작합니다.");
+
+            setTries([]);
+            setValue("");
+            setResult("");
+            setAnswer(getNumbers());
+        }else{
+            if(tries.length>=9){
+                alert("Game over!! try again?");
+                setTries([]);
+                setValue("");
+                setResult("");
+                setAnswer(getNumbers());
+            }else{
+                const arrayNumber = value.split("").map( (v) => {return ~~(v)});
+                let strike = 0;
+                let ball = 0;
+                for(let i=0;i<arrayNumber.length;i++){
+                    if(answer[i] == arrayNumber[i]){
+                        strike = strike + 1;
+                    }else if(answer.includes(arrayNumber[i])){
+                        ball = ball + 1;
+                    }
+                }
+                
+                //예전 state값으로 부터 현재 state값을 만들때는 함수형으로 선언해야 한다.
+                setValue("");
+                setTries((prevState) => {return [...prevState.tries,{try:value,result:`${strike} 스트라이크, ${ball} 볼` }]});
+            }
+        }
+    };
+    onChangeInput = (e) => {
+            setValue(e.target.value);
+    };
+
+    return ( 
+        <>
+            <h1>{result}</h1>
+            <form onSubmit={onSubmitForm}>
+                <input maxLength={4} value={value} onChange={onChangeInput}/>
+            </form>
+            <div>시도 : {tries.length}   </div>
+            <ul>
+                {/*  화살표 함수에서 중괄호{}가 없으면 return 이 생략된다. */}
+                {tries.map( (v,i) => 
+                    //고유한 key가 있어야 한다.
+                    <Try key={`${i+1}차 시도`} vv={v} idx={i}/>
+                )}
+            </ul>
+        </>
+    );
+};
+
+
+
 class NumberBaseball extends Component{
     state = {
         result:'', //결과값
@@ -20,12 +90,12 @@ class NumberBaseball extends Component{
     onSubmitForm = (e) => {
         e.preventDefault();
 
-        if(this.state.value == this.state.answer.join("")){
+        if(value == answer.join("")){
             //예전 state값으로 부터 현재 state값을 만들때는 함수형으로 선언해야 한다.
             this.setState((prevState) => {
                 return {
                     'result':"홈런!!!",
-                    'tries':[...prevState.tries, {try:this.state.value , result:'홈런'}]
+                    'tries':[...prevState.tries, {try:value , result:'홈런'}]
                 }
             });
             alert("게임을 다시 시작합니다.");
@@ -36,7 +106,7 @@ class NumberBaseball extends Component{
                 answer:getNumbers(),
             });
         }else{
-            if(this.state.tries.length>=9){
+            if(tries.length>=9){
                 alert("Game over!! try again?");
                 this.setState({
                     tries:[],
@@ -45,13 +115,13 @@ class NumberBaseball extends Component{
                     answer:getNumbers(),
                 });
             }else{
-                const arrayNumber = this.state.value.split("").map( (v) => {return ~~(v)});
+                const arrayNumber = value.split("").map( (v) => {return ~~(v)});
                 let strike = 0;
                 let ball = 0;
                 for(let i=0;i<arrayNumber.length;i++){
-                    if(this.state.answer[i] == arrayNumber[i]){
+                    if(answer[i] == arrayNumber[i]){
                         strike = strike + 1;
-                    }else if(this.state.answer.includes(arrayNumber[i])){
+                    }else if(answer.includes(arrayNumber[i])){
                         ball = ball + 1;
                     }
                 }
@@ -60,7 +130,7 @@ class NumberBaseball extends Component{
                 this.setState((prevState) => {
                     return {
                         'value':'',
-                        'tries':[...prevState.tries,{try:this.state.value,result:`${strike} 스트라이크, ${ball} 볼` }]
+                        'tries':[...prevState.tries,{try:value,result:`${strike} 스트라이크, ${ball} 볼` }]
                     }
                 });
             }
@@ -81,14 +151,14 @@ class NumberBaseball extends Component{
     render(){
         return ( 
             <>
-                <h1>{this.state.result}</h1>
+                <h1>{result}</h1>
                 <form onSubmit={this.onSubmitForm}>
-                    <input maxLength={4} value={this.state.value} onChange={this.onChangeInput}/>
+                    <input maxLength={4} value={value} onChange={this.onChangeInput}/>
                 </form>
-                <div>시도 : {this.state.tries.length}   </div>
+                <div>시도 : {tries.length}   </div>
                 <ul>
                     {/*  화살표 함수에서 중괄호{}가 없으면 return 이 생략된다. */}
-                    {this.state.tries.map( (v,i) => 
+                    {tries.map( (v,i) => 
                         //고유한 key가 있어야 한다.
                         <Try key={`${i+1}차 시도`} vv={v} idx={i}/>
                     )}
