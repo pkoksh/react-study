@@ -21,9 +21,12 @@ class NumberBaseball extends Component{
         e.preventDefault();
 
         if(this.state.value == this.state.answer.join("")){
-            this.setState({
-                'result':"홈런!!!",
-                'tries':[...this.state.tries, {try:this.state.value , result:'홈런'}]
+            //예전 state값으로 부터 현재 state값을 만들때는 함수형으로 선언해야 한다.
+            this.setState((prevState) => {
+                return {
+                    'result':"홈런!!!",
+                    'tries':[...prevState.tries, {try:this.state.value , result:'홈런'}]
+                }
             });
             alert("게임을 다시 시작합니다.");
             this.setState({
@@ -52,10 +55,13 @@ class NumberBaseball extends Component{
                         ball = ball + 1;
                     }
                 }
-
-                this.setState({
-                    'value':'',
-                    'tries':[...this.state.tries,{try:this.state.value,result:`${strike} 스트라이크, ${ball} 볼` }]
+                
+                //예전 state값으로 부터 현재 state값을 만들때는 함수형으로 선언해야 한다.
+                this.setState((prevState) => {
+                    return {
+                        'value':'',
+                        'tries':[...prevState.tries,{try:this.state.value,result:`${strike} 스트라이크, ${ball} 볼` }]
+                    }
                 });
             }
         }
