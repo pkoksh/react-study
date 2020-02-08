@@ -1,12 +1,12 @@
-import React,{Component} from 'react';
+import React,{memo} from 'react';
 
-const Try = (pp) => {
+const Try = memo((pp) => {
     return (
         <li>
             <b>{pp.vv.try}</b> - {pp.vv.result}
         </li>
     );
-}
+});
 
 // class Try extends Component{
 //     render(){

@@ -55,8 +55,7 @@ const NumberBaseball = () => {
                 setTries((prevState) => {return [...prevState,{try:value,result:`${strike} 스트라이크, ${ball} 볼` }]});
             }
         }
-    };
-
+    }
     return ( 
         <>
             <h1>{result}</h1>
