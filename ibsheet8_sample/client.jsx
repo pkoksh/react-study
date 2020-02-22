@@ -6,9 +6,9 @@
 import React from 'react';
 import ReactDom from 'react-dom';
  import {hot} from 'react-hot-loader/root';
-import RSP from './rsp';
+import NumberBaseball from './ResponseCheck';
 
 
- const Hot = hot(RSP);
+ const Hot = hot(NumberBaseball);
 
 ReactDom.render(<Hot/>,document.getElementById('root'));

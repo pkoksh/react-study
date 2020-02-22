@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{setState} from 'react';
 
 class ResponseCheck extends React.Component{
     state = {
